@@ -12,8 +12,6 @@ public class Splitter {
 	private File sourceFile;
 	private String header;
 	private int fileNumber;
-	private BufferedReader reader;
-	private BufferedWriter writer;
 	String line;
 	
 	public Splitter(File sourceFile) {
@@ -22,32 +20,26 @@ public class Splitter {
 	}
 
 	public void split(int amount, boolean hasHeader) throws IOException {
-		int count = 0;
-		reader = new BufferedReader(new FileReader(sourceFile));
-		writer = createNewWriter();
-		getFirstLineHeader(hasHeader);
-		writeIfHasHeader(hasHeader);
-		while(line != null) {
-			writer.write(line);
-			writer.newLine();
-			line = reader.readLine();
-			++count;
-			if(count >= amount && line != null) {
-				writer.close();
-				++fileNumber;
-				count = 0;
-				writer = createNewWriter();
-				writeIfHasHeader(hasHeader);
+		try(BufferedReader reader = new BufferedReader(new FileReader(sourceFile))){
+			getFirstLineHeader(hasHeader, reader);
+			while(line != null) {
+				try(BufferedWriter writer = createNewWriter()){
+					writeIfHasHeader(hasHeader, writer);
+					for(int count = 1; count <= amount && line != null; ++count) {
+						writeLine(writer);
+						line = reader.readLine();
+					}
+					++fileNumber;
+				}
 			}
 		}
-		writer.close();
-		reader.close();
+		//deixar exceção chegar até o controller
 	}
 	
 	private BufferedWriter createNewWriter() throws IOException {
-		String folder = sourceFile.getParent() + "\\";
-		String fileName = getFileName() + "_" + fileNumber;
-		String path = folder + fileName + getFileExtension();
+		String folder = sourceFile.getParent();
+		String fileName = getFileName() + "_" + fileNumber + getFileExtension();
+		String path = folder + "\\" + fileName;
 		return new BufferedWriter(new FileWriter(path));
 	}
 	
@@ -61,7 +53,7 @@ public class Splitter {
 		return name.substring(name.lastIndexOf("."));
 	}
 	
-	private void getFirstLineHeader(boolean hasHeader) throws IOException {
+	private void getFirstLineHeader(boolean hasHeader, BufferedReader reader) throws IOException {
 		line = reader.readLine();
 		if(hasHeader) {
 			header = line;
@@ -69,10 +61,15 @@ public class Splitter {
 		}
 	}
 	
-	private void writeIfHasHeader(boolean hasHeader) throws IOException {
+	private void writeIfHasHeader(boolean hasHeader, BufferedWriter writer) throws IOException {
 		if(hasHeader) {
 			writer.write(header);
 			writer.newLine();
 		}
+	}
+	
+	private void writeLine(BufferedWriter writer) throws IOException {
+		writer.write(line);
+		writer.newLine();
 	}
 }
