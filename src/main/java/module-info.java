@@ -4,6 +4,6 @@ module com.example.csv_spliter {
 	requires javafx.base;
 	requires javafx.graphics;
 
-    opens com.example.csv_spliter to javafx.fxml;
-    exports com.example.csv_spliter;
+    opens com.example.csv_splitter to javafx.fxml;
+    exports com.example.csv_splitter;
 }

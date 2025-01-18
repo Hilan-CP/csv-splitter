@@ -1,4 +1,4 @@
-package com.example.csv_spliter;
+package com.example.csv_splitter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,20 +16,16 @@ public class Splitter {
 	private BufferedWriter writer;
 	String line;
 	
-	public Splitter() {
-		fileNumber = 0;
+	public Splitter(File sourceFile) {
+		this.sourceFile = sourceFile;
+		this.fileNumber = 0;
 	}
 
 	public void split(int amount, boolean hasHeader) throws IOException {
-		String folder = sourceFile.getParent() + "\\";
-		String fileName = getFileName() + "_";
-		String fileExtension = getFileExtension();
 		int count = 0;
 		reader = new BufferedReader(new FileReader(sourceFile));
-		writer = newWriter(folder + fileName + fileNumber + fileExtension);
-
-		line = reader.readLine();
-		getHeader(hasHeader);
+		writer = createNewWriter();
+		getFirstLineHeader(hasHeader);
 		writeIfHasHeader(hasHeader);
 		while(line != null) {
 			writer.write(line);
@@ -40,7 +36,7 @@ public class Splitter {
 				writer.close();
 				++fileNumber;
 				count = 0;
-				writer = newWriter(folder + fileName + fileNumber + fileExtension);
+				writer = createNewWriter();
 				writeIfHasHeader(hasHeader);
 			}
 		}
@@ -48,21 +44,25 @@ public class Splitter {
 		reader.close();
 	}
 	
-	private String getFileName() {
-		String file = sourceFile.getName();
-		return file.substring(0, file.lastIndexOf("."));
-	}
-	
-	private String getFileExtension() {
-		String file = sourceFile.getName();
-		return file.substring(file.lastIndexOf("."));
-	}
-	
-	private BufferedWriter newWriter(String path) throws IOException {
+	private BufferedWriter createNewWriter() throws IOException {
+		String folder = sourceFile.getParent() + "\\";
+		String fileName = getFileName() + "_" + fileNumber;
+		String path = folder + fileName + getFileExtension();
 		return new BufferedWriter(new FileWriter(path));
 	}
 	
-	private void getHeader(boolean hasHeader) throws IOException {
+	private String getFileName() {
+		String name = sourceFile.getName();
+		return name.substring(0, name.lastIndexOf("."));
+	}
+	
+	private String getFileExtension() {
+		String name = sourceFile.getName();
+		return name.substring(name.lastIndexOf("."));
+	}
+	
+	private void getFirstLineHeader(boolean hasHeader) throws IOException {
+		line = reader.readLine();
 		if(hasHeader) {
 			header = line;
 			line = reader.readLine();
@@ -74,9 +74,5 @@ public class Splitter {
 			writer.write(header);
 			writer.newLine();
 		}
-	}
-
-	public void setSourceFile(File sourceFile) {
-		this.sourceFile = sourceFile;
 	}
 }

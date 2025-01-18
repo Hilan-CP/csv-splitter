@@ -1,4 +1,4 @@
-package com.example.csv_spliter;
+package com.example.csv_splitter;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
