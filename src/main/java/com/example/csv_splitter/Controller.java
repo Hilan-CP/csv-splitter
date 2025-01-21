@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,9 +17,12 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class Controller implements Initializable {
 	
@@ -69,7 +73,7 @@ public class Controller implements Initializable {
     		return new File(filePath);
     	}
     	else {
-    		throw new IOException("Invalid file extension");
+    		throw new IOException("Extensão de arquivo inválida. Utilize arquivos csv ou txt.");
     	}
     }
     
@@ -83,11 +87,48 @@ public class Controller implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initializeSpinner();
+		initializeSpinnerValueFactory();
+		initializeSpinnerFormatter();
 	}
 	
-	private void initializeSpinner() {
+	private void initializeSpinnerValueFactory() {
 		SpinnerValueFactory<Integer> spinnerFactory = new IntegerSpinnerValueFactory(1, Integer.MAX_VALUE);
 		amountSpinner.setValueFactory(spinnerFactory);
+	}
+	
+	private void initializeSpinnerFormatter() {
+		TextFormatter<Integer> formatter = new TextFormatter<>(customConverter(), 1, customFilter());
+		amountSpinner.getEditor().setTextFormatter(formatter);
+	}
+	
+	private UnaryOperator<Change> customFilter(){
+		UnaryOperator<Change> filter = change -> {
+			String value = change.getText();
+			if(value.matches("\\d*")) {
+				return change;
+			}
+			return null;
+		};
+		return filter;
+	}
+	
+	private StringConverter<Integer> customConverter(){
+		StringConverter<Integer> converter = new StringConverter<Integer>() {
+			@Override
+			public String toString(Integer object) {
+				return object.toString();
+			}
+			
+			@Override
+			public Integer fromString(String string) {
+				try {
+					return Integer.parseInt(string);
+				}
+				catch(NumberFormatException e) {
+					return Integer.MAX_VALUE;
+				}
+			}
+		};
+		return converter;
 	}
 }
