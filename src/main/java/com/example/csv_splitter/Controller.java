@@ -72,6 +72,9 @@ public class Controller implements Initializable {
     	if(filePath.endsWith(".csv") || filePath.endsWith(".txt")) {
     		return new File(filePath);
     	}
+    	else if(filePath.trim().equals("")) {
+    		throw new IOException("Nenhum arquivo selecionado.");
+    	}
     	else {
     		throw new IOException("Extensão de arquivo inválida. Utilize arquivos csv ou txt.");
     	}

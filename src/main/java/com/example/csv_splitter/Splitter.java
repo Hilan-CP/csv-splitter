@@ -39,7 +39,7 @@ public class Splitter {
 	private BufferedWriter createNewWriter() throws IOException {
 		String folder = sourceFile.getParent();
 		String fileName = getFileName() + "_" + fileNumber + getFileExtension();
-		String path = folder + "\\" + fileName;
+		String path = folder + File.separator + fileName;
 		return new BufferedWriter(new FileWriter(path));
 	}
 	
