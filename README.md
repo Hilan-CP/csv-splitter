@@ -8,6 +8,8 @@ Programa simples que permite dividir arquivos de extensão **.csv** ou **.txt** 
 *	Java 21 - Consulte <https://www.oracle.com/java/technologies/downloads/> para fazer a instalação.
 *	JavaFX SDK 21 (Opcional) - Consulte <https://openjfx.io/> para fazer a instalação e criar a variável de ambiente.
 
+O charset do arquivo de entrada é detectado automaticamente com [ICU4J](https://github.com/unicode-org/icu) (licença Unicode-3.0, permissiva e compatível com MIT) e utilizado tanto na leitura quanto na escrita dos arquivos divididos. Detalhes em [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+
 ## Como usar
 Em um sistema Windows / Linux / MacOS basta baixar o arquivo [csv-splitter.jar](https://github.com/Hilan-CP/csv-splitter/releases/download/v1.0.1/csv-splitter.jar) e dar um duplo clique.
 
