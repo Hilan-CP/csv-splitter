@@ -11,11 +11,11 @@ Programa simples que permite dividir arquivos de extensão **.csv** ou **.txt** 
 O charset do arquivo de entrada é detectado automaticamente com [ICU4J](https://github.com/unicode-org/icu) (licença Unicode-3.0, permissiva e compatível com MIT) e utilizado tanto na leitura quanto na escrita dos arquivos divididos. Detalhes em [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
 ## Como usar
-Em um sistema Windows / Linux / MacOS basta baixar o arquivo [csv-splitter.jar](https://github.com/Hilan-CP/csv-splitter/releases/download/v1.0.1/csv-splitter.jar) e dar um duplo clique.
+Em um sistema Windows / Linux / MacOS basta baixar o arquivo [csv-splitter.jar](https://github.com/Hilan-CP/csv-splitter/releases/download/v1.0.2/csv-splitter.jar) e dar um duplo clique.
 
-Para usar a versão modular é necessário realizar a instalação do JavaFX SDK. Com a instalação concluída, baixe o arquivo [csv-splitter-1.0.1.jar](https://github.com/Hilan-CP/csv-splitter/releases/download/v1.0.1/csv-splitter-1.0.1.jar) e use seguinte comando para executar a aplicação:
+Para usar a versão modular é necessário realizar a instalação do JavaFX SDK. Com a instalação concluída, baixe o arquivo [csv-splitter-1.0.2.jar](https://github.com/Hilan-CP/csv-splitter/releases/download/v1.0.2/csv-splitter-1.0.2.jar) e use seguinte comando para executar a aplicação:
 
-	java --module-path $PATH_TO_FX --add-modules javafx.controls,javafx.fxml,javafx.graphics -cp csv-splitter-1.0.1.jar com.example.csv_splitter.Main
+	java --module-path $PATH_TO_FX --add-modules javafx.controls,javafx.fxml,javafx.graphics -cp csv-splitter-1.0.2.jar com.example.csv_splitter.Main
 
 ## Opções
 
